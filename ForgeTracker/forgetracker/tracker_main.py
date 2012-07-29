@@ -1062,7 +1062,6 @@ class TicketController(BaseController):
 
     @require_post()
     def _update_ticket(self, post_data):
-        import pdb; pdb.set_trace()
         require_access(self.ticket, 'update')
         changes = changelog()
         comment = post_data.pop('comment', None)
