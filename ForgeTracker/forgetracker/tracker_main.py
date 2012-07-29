@@ -1126,6 +1126,7 @@ class TicketController(BaseController):
                 changes[cf.name[1:]] = cf_val(cf)
         thread = self.ticket.discussion_thread
         latest_post = thread.posts and thread.posts[-1] or None
+        import pdb; pdb.set_trace()
         post = None
         if latest_post and latest_post.author() == c.user:
             now = datetime.utcnow()
