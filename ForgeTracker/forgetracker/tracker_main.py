@@ -1062,6 +1062,7 @@ class TicketController(BaseController):
 
     @require_post()
     def _update_ticket(self, post_data):
+        import pdb; pdb.set_trace()
         require_access(self.ticket, 'update')
         changes = changelog()
         comment = post_data.pop('comment', None)
@@ -1126,7 +1127,6 @@ class TicketController(BaseController):
                 changes[cf.name[1:]] = cf_val(cf)
         thread = self.ticket.discussion_thread
         latest_post = thread.posts and thread.posts[-1] or None
-        import pdb; pdb.set_trace()
         post = None
         if latest_post and latest_post.author() == c.user:
             now = datetime.utcnow()
