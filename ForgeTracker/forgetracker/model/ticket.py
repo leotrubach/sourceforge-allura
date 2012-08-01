@@ -428,11 +428,11 @@ class Ticket(VersionedArtifact, ActivityObject, VotableArtifact):
         Feed.post(self, description)
 
     def post_sent(self, post):
-        import pdb; pdb.set_trace()
         monitoring_email = c.app.config.options.get('TicketMonitoringEmail')
         monitoring_type = c.app.config.options.get('TicketMonitoringType')
         if monitoring_email and monitoring_type == 'AllTicketChanges':
             n = Notification._make_notification(post, 'message', post=post)
+            print n.text
             n.send_simple(monitoring_email)
 
     def url(self):
