@@ -501,7 +501,7 @@ class Post(Message, VersionedArtifact, ActivityObject):
             self.thread.last_post_date,
             self.mod_date)
         self.thread.update_stats()
-        self.artifact.update_stats()
+        artifact.update_stats()
 
     def spam(self):
         self.status = 'spam'
