@@ -493,13 +493,7 @@ class Post(Message, VersionedArtifact, ActivityObject):
                 self.acl, author.project_role()._id, 'unmoderated_post')
         g.post_event('discussion.new_post', self.thread_id, self._id)
         artifact = self.thread.artifact or self.thread
-        n = Notification.post(artifact, 'message', post=self, file_info=file_info)
-        if hasattr(artifact,"monitoring_email") and artifact.monitoring_email:
-            if hasattr(artifact, 'notify_post'):
-                if artifact.notify_post:
-                    n.send_simple(artifact.monitoring_email)
-            else: #  Send if no extra checks required
-                n.send_simple(artifact.monitoring_email)
+        self.notify()
         session(self).flush()
         self.thread.last_post_date = max(
             self.thread.last_post_date,
@@ -507,6 +501,16 @@ class Post(Message, VersionedArtifact, ActivityObject):
         self.thread.update_stats()
         if hasattr(artifact, 'update_stats'):
             artifact.update_stats()
+
+    def notify(self):
+        artifact = self.thread.artifact or self.thread
+        n = Notification.post(artifact, 'message', post=self, file_info=file_info)
+        if hasattr(artifact,"monitoring_email") and artifact.monitoring_email:
+            if hasattr(artifact, 'notify_post'):
+                if artifact.notify_post:
+                    n.send_simple(artifact.monitoring_email)
+            else: #  Send if no extra checks required
+                n.send_simple(artifact.monitoring_email)
 
     def spam(self):
         self.status = 'spam'
